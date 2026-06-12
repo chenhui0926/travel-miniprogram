@@ -29,18 +29,38 @@
 3. 获取 Key
 4. 在小程序后台添加 request 合法域名：`https://apis.map.qq.com`
 
-### 2. 配置 Key
+### 2. 配置 API Key（重要！）
 
-修改 `app.js` 中的配置项：
+⚠️ **不要把 API Key 提交到 GitHub！**
 
+推荐方法（已配置好）：
+
+1. **复制配置模板**：
+   ```bash
+   cp config.example.js config.js
+   ```
+
+2. **编辑 `config.js`**，填入你的 Key：
+   ```javascript
+   module.exports = {
+     TENCENT_MAP_KEY: '你的腾讯地图Key',
+     QWEATHER_KEY: '你的和风天气Key'
+   }
+   ```
+
+3. **`config.js` 已在 `.gitignore` 中**，不会提交到 Git
+
+<details>
+<summary>方法二：直接修改 app.js（不推荐）</summary>
+
+直接编辑 `app.js`，替换这两个占位符：
 ```javascript
-App({
-  globalData: {
-    TENCENT_MAP_KEY: '你的腾讯地图Key',
-    QWEATHER_KEY: '你的和风天气Key'
-  }
-});
+TENCENT_MAP_KEY: 'YOUR_TENCENT_MAP_KEY',
+QWEATHER_KEY: 'YOUR_QWEATHER_KEY',
 ```
+
+⚠️ 注意：此方法会将 Key 提交到 Git 历史中，不安全！
+</details>
 
 ### 3. 导入微信开发者工具
 
