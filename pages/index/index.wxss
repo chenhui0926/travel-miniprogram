@@ -1,0 +1,4 @@
+/* 首页样式 */
+page {
+  background: #f5f7fa;
+}

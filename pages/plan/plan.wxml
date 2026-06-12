@@ -1,0 +1,89 @@
+<view class="container">
+  <!-- 无行程提示 -->
+  <view class="empty-state" wx:if="{{!hasPlan}}">
+    <view style="font-size:80rpx;margin-bottom:20rpx;">🗺️</view>
+    <view>还没有行程计划</view>
+    <view style="margin-top:16rpx;font-size:26rpx;">去首页规划你的特种兵之旅吧</view>
+    <button class="btn btn-primary" style="margin-top:40rpx;width:60%;" bindtap="goToSetup">去规划</button>
+  </view>
+
+  <!-- 天气提示 -->
+  <view class="weather-alert" wx:if="{{isRainy && weather}}">
+    <view style="font-weight:600;">🌧️ 天气提醒</view>
+    <view style="margin-top:8rpx;">{{weather.city}} {{weather.now.temp}}°C {{weather.now.text}}，行程已自动调整，室外景点已优化安排</view>
+  </view>
+
+  <!-- 行程头部 -->
+  <view class="header" wx:if="{{hasPlan}}">
+    <view class="header-title">{{city}} · {{days}}天</view>
+    <view class="header-sub">{{pace}} · {{styles.join('+')}}</view>
+  </view>
+
+  <!-- 天气条 -->
+  <view class="weather-bar" wx:if="{{weather}}">
+    <view class="weather-icon">{{weather.now.icon ? '☁️' : '🌤️'}}</view>
+    <view class="weather-info">
+      <view class="weather-city">{{weather.city}} {{weather.now.temp}}°C {{weather.now.text}}</view>
+      <view class="weather-desc">{{weather.forecast[0].textDay}} / 湿度{{weather.now.humidity}}%</view>
+    </view>
+  </view>
+
+  <!-- 天数标签 -->
+  <view class="tabs" wx:if="{{hasPlan}}">
+    <view
+      wx:for="{{itinerary}}"
+      wx:key="index"
+      class="tab {{activeDay === index ? 'active' : ''}}"
+      data-day="{{index}}"
+      bindtap="switchDay"
+    >第{{index + 1}}天</view>
+  </view>
+
+  <!-- 当天行程 -->
+  <view class="day-card" wx:if="{{hasPlan && itinerary[activeDay]}}">
+    <view class="day-header">
+      <text>第{{activeDay + 1}}天</text>
+      <text>{{itinerary[activeDay].length}}个打卡点</text>
+    </view>
+
+    <view
+      wx:for="{{itinerary[activeDay]}}"
+      wx:key="name"
+      class="spot {{done.indexOf(activeDay + '-' + item.name) > -1 ? 'done' : ''}}"
+      data-day="{{activeDay}}"
+      data-name="{{item.name}}"
+      bindtap="toggleDone"
+    >
+      <view class="spot-check"></view>
+      <view class="spot-info">
+        <view class="spot-time">{{item.scheduledTime || item.time}}
+          <text wx:if="{{item.weatherNote}}" style="color:#e94560;margin-left:12rpx;">{{item.weatherNote}}</text>
+        </view>
+        <view class="spot-title">{{item.name}}</view>
+        <view class="spot-desc">{{item.desc}}</view>
+        <view style="display:flex;align-items:center;margin-top:8rpx;">
+          <view class="spot-type">{{item.type}}</view>
+          <view
+            wx:if="{{item.lat && item.lng}}"
+            style="margin-left:16rpx;font-size:22rpx;color:#e94560;"
+            catchtap="openMap"
+            data-lat="{{item.lat}}"
+            data-lng="{{item.lng}}"
+            data-name="{{item.name}}"
+          >📍 查看地图</view>
+          <view
+            wx:if="{{item.lat && item.lng}}"
+            style="margin-left:16rpx;font-size:22rpx;color:#00b894;"
+            catchtap="navigateToSpot"
+            data-lat="{{item.lat}}"
+            data-lng="{{item.lng}}"
+            data-name="{{item.name}}"
+          >🧭 导航</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 分享按钮 -->
+  <button class="btn btn-outline" wx:if="{{hasPlan}}" open-type="share" style="margin-top:20rpx;">📤 分享给同行人</button>
+</view>

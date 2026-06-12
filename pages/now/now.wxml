@@ -1,0 +1,94 @@
+<view class="container">
+  <!-- 无行程 -->
+  <view class="empty-state" wx:if="{{!hasPlan}}">
+    <view style="font-size:80rpx;margin-bottom:20rpx;">📍</view>
+    <view>还没有行程计划</view>
+    <view style="margin-top:16rpx;font-size:26rpx;">去首页规划你的特种兵之旅吧</view>
+    <button class="btn btn-primary" style="margin-top:40rpx;width:60%;" bindtap="goToPlan">去规划</button>
+  </view>
+
+  <block wx:if="{{hasPlan}}">
+    <!-- 统计 -->
+    <view class="stats-grid">
+      <view class="stat-box">
+        <view class="stat-num">{{doneCount}}</view>
+        <view class="stat-label">已完成</view>
+      </view>
+      <view class="stat-box">
+        <view class="stat-num">{{total}}</view>
+        <view class="stat-label">总打卡点</view>
+      </view>
+      <view class="stat-box">
+        <view class="stat-num">{{percent}}%</view>
+        <view class="stat-label">完成度</view>
+      </view>
+    </view>
+
+    <!-- 进度条 -->
+    <view class="progress-wrap">
+      <view style="font-size:26rpx;color:#888;margin-bottom:16rpx;">行程进度</view>
+      <view class="progress-bar">
+        <view class="progress-fill" style="width:{{percent}}%"></view>
+      </view>
+      <view class="progress-text">{{progressMsg}}</view>
+    </view>
+
+    <!-- 当前状态 -->
+    <view class="section-title">当前状态</view>
+    <view class="status-panel">
+      <view class="status-title">你目前的位置</view>
+      <view class="current-spot" wx:if="{{currentSpot}}">
+        <view class="current-icon">📍</view>
+        <view class="current-text">
+          <view class="current-title">{{currentSpot.name}}</view>
+          <view class="current-sub">
+            <block wx:if="{{itinerary[currentSpot.day][currentSpot.idx + 1]}}">
+              下一站：{{itinerary[currentSpot.day][currentSpot.idx + 1].name}}
+            </block>
+            <block wx:elif="{{currentSpot.day + 1 < days}}">
+              今日结束，明天第一站：{{itinerary[currentSpot.day + 1][0].name}}
+            </block>
+            <block wx:else>今日行程已结束，好好休息！</block>
+          </view>
+        </view>
+      </view>
+      <view class="current-spot" wx:else>
+        <view class="current-icon">🚀</view>
+        <view class="current-text">
+          <view class="current-title">准备出发</view>
+          <view class="current-sub">还没开始打卡，点击行程开始你的特种兵之旅</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 下一步建议 -->
+    <view class="section-title">下一步建议</view>
+    <block wx:if="{{nextSpots.length > 0}}">
+      <view class="next-card" wx:for="{{nextSpots}}" wx:key="name">
+        <view class="next-label">{{item.reason}}</view>
+        <view class="next-title">{{item.name}}</view>
+        <view class="next-desc">{{item.desc}}</view>
+        <view class="next-meta">
+          <text>⏰ {{item.scheduledTime || item.time}}</text>
+          <text>⏱️ 约{{item.duration}}分钟</text>
+          <text>📍 第{{item.day + 1}}天</text>
+        </view>
+        <view class="next-actions">
+          <button class="btn btn-accent" data-day="{{item.day}}" data-name="{{item.name}}" bindtap="quickCheckIn">✅ 一键打卡</button>
+          <button class="btn btn-outline" bindtap="goToPlan">📋 查看行程</button>
+        </view>
+        <view style="display:flex;gap:16rpx;margin-top:12rpx;" wx:if="{{item.lat && item.lng}}">
+          <view style="font-size:24rpx;color:#00b894;" data-lat="{{item.lat}}" data-lng="{{item.lng}}" data-name="{{item.name}}" bindtap="navigateToSpot">🧭 路线规划</view>
+          <view style="font-size:24rpx;color:#e94560;" data-lat="{{item.lat}}" data-lng="{{item.lng}}" data-name="{{item.name}}" bindtap="openMap">📍 查看地图</view>
+        </view>
+      </view>
+    </block>
+    <view wx:else style="text-align:center;color:#888;padding:60rpx 40rpx;">
+      <view style="font-size:60rpx;margin-bottom:16rpx;">🎉</view>
+      <view>全部打卡完成！你是真正的特种兵！</view>
+    </view>
+
+    <!-- 重置 -->
+    <button class="btn btn-outline" bindtap="resetPlan" style="margin-top:40rpx;">🔄 重置行程</button>
+  </block>
+</view>

@@ -1,0 +1,31 @@
+<view class="map-container">
+  <map
+    id="spotMap"
+    class="map"
+    latitude="{{latitude}}"
+    longitude="{{longitude}}"
+    scale="{{scale}}"
+    markers="{{markers}}"
+    show-location
+    show-compass
+  ></map>
+
+  <view class="map-controls">
+    <view class="control-btn" bindtap="zoomIn">+</view>
+    <view class="control-btn" bindtap="zoomOut">-</view>
+    <view class="control-btn" bindtap="moveToLocation">📍</view>
+  </view>
+
+  <view class="spot-info">
+    <view class="spot-name">{{name}}</view>
+    <view class="spot-address">{{address}}</view>
+    <view class="action-buttons">
+      <button class="btn btn-navigate" bindtap="startNavigate">
+        🧭 开始导航
+      </button>
+      <button class="btn btn-share" open-type="share">
+        📤 分享给同行人
+      </button>
+    </view>
+  </view>
+</view>

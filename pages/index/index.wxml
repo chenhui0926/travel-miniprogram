@@ -1,0 +1,108 @@
+<view class="container">
+  <view class="header">
+    <view class="header-title">特种兵旅游助手</view>
+    <view class="header-sub">行程规划 + 实时导航 + 天气调整</view>
+  </view>
+
+  <!-- 城市选择 -->
+  <view class="section-title">选择目的地</view>
+  <view class="city-grid">
+    <view
+      wx:for="{{cities}}"
+      wx:key="name"
+      class="city-card {{selectedCity === item.name ? 'selected' : ''}}"
+      data-city="{{item.name}}"
+      bindtap="selectCity"
+    >
+      <view class="city-emoji">{{item.emoji}}</view>
+      <view class="city-name">{{item.name}}</view>
+    </view>
+    <view
+      class="city-card {{selectedCity === '__custom__' ? 'selected' : ''}}"
+      data-city="__custom__"
+      bindtap="selectCity"
+      style="grid-column: span 2;"
+    >
+      <view class="city-emoji">✏️</view>
+      <view class="city-name">自定义目的地</view>
+    </view>
+  </view>
+
+  <!-- 自定义城市表单 -->
+  <view class="custom-city-wrap" wx:if="{{showCustomForm}}">
+    <view class="form-group">
+      <view class="form-label">城市名称</view>
+      <input class="form-input" placeholder="例如：广州、青岛、拉萨..." value="{{customCityName}}" bindinput="onCustomCityInput"/>
+    </view>
+
+    <view class="spot-list-header">
+      <view class="form-label" style="margin:0;">打卡点列表</view>
+      <text style="font-size:24rpx;color:#888;">已添加 {{customSpots.length}} 个</text>
+    </view>
+
+    <view class="custom-spot-row" wx:for="{{customSpots}}" wx:key="index">
+      <view class="row">
+        <view class="form-group" style="flex:2;margin-bottom:0;">
+          <input class="form-input" placeholder="打卡点名称" data-idx="{{index}}" data-field="name" value="{{item.name}}" bindinput="onSpotInput"/>
+        </view>
+        <view class="form-group" style="flex:1;margin-bottom:0;">
+          <picker mode="selector" range="{{['景点','美食','文化','购物','自然','夜生活']}}" data-idx="{{index}}" bindchange="onSpotTypeChange">
+            <view class="form-input" style="text-align:center;">{{item.type}}</view>
+          </picker>
+        </view>
+      </view>
+      <view class="row" style="margin-top:16rpx;">
+        <view class="form-group" style="flex:2;margin-bottom:0;">
+          <input class="form-input" placeholder="简短描述" data-idx="{{index}}" data-field="desc" value="{{item.desc}}" bindinput="onSpotInput"/>
+        </view>
+        <view class="form-group" style="flex:1;margin-bottom:0;">
+          <picker mode="time" value="{{item.time}}" data-idx="{{index}}" data-field="time" bindchange="onSpotInput">
+            <view class="form-input" style="text-align:center;">{{item.time}}</view>
+          </picker>
+        </view>
+        <view class="form-group" style="flex:1;margin-bottom:0;">
+          <input class="form-input" type="number" placeholder="分钟" data-idx="{{index}}" data-field="duration" value="{{item.duration}}" bindinput="onSpotInput"/>
+        </view>
+      </view>
+      <view style="text-align:right;margin-top:16rpx;">
+        <button class="btn-sm btn-del" size="mini" data-idx="{{index}}" bindtap="removeCustomSpot">删除</button>
+      </view>
+    </view>
+
+    <button class="btn-sm btn-add" size="mini" bindtap="addCustomSpot" style="margin-top:8rpx;">+ 添加打卡点</button>
+  </view>
+
+  <!-- 天数 -->
+  <view class="form-group">
+    <view class="form-label">出行天数</view>
+    <picker mode="selector" range="{{['1天（极限特种兵）','2天','3天','4天','5天']}}" value="{{days-1}}" bindchange="onDaysChange">
+      <view class="form-input">{{days}}天</view>
+    </picker>
+  </view>
+
+  <!-- 风格 -->
+  <view class="form-group">
+    <view class="form-label">旅行风格（可多选）</view>
+    <view class="tags">
+      <view
+        wx:for="{{styleTags}}"
+        wx:key="val"
+        class="tag {{styles.indexOf(item.val) > -1 ? 'selected' : ''}}"
+        data-val="{{item.val}}"
+        bindtap="toggleStyle"
+      >{{item.label}}</view>
+    </view>
+  </view>
+
+  <!-- 节奏 -->
+  <view class="form-group">
+    <view class="form-label">行程节奏</view>
+    <picker mode="selector" range="{{['😌 佛系漫游（每天2-3个点）','⚡ 标准特种兵（每天4-5个点）','🔥 极限挑战（每天6-8个点）']}}" value="{{pace === 'relaxed' ? 0 : pace === 'normal' ? 1 : 2}}" bindchange="onPaceChange">
+      <view class="form-input">{{pace === 'relaxed' ? '佛系漫游' : pace === 'normal' ? '标准特种兵' : '极限挑战'}}</view>
+    </picker>
+  </view>
+
+  <!-- 生成按钮 -->
+  <button class="btn btn-primary" bindtap="generatePlan" loading="{{generating}}">🚀 生成行程</button>
+
+</view>

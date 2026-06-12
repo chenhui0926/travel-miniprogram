@@ -1,0 +1,85 @@
+.map-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+
+.map {
+  width: 100%;
+  height: 100%;
+}
+
+.map-controls {
+  position: absolute;
+  top: 20rpx;
+  right: 20rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+}
+
+.control-btn {
+  width: 70rpx;
+  height: 70rpx;
+  background: #fff;
+  border-radius: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+  font-weight: bold;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.15);
+}
+
+.spot-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-radius: 24rpx 24rpx 0 0;
+  padding: 32rpx;
+  box-shadow: 0 -4rpx 20rpx rgba(0,0,0,0.1);
+}
+
+.spot-name {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 8rpx;
+}
+
+.spot-address {
+  font-size: 26rpx;
+  color: #888;
+  margin-bottom: 24rpx;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 16rpx;
+}
+
+.btn {
+  flex: 1;
+  height: 84rpx;
+  border-radius: 42rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.btn-navigate {
+  background: #1a1a2e;
+  color: #fff;
+}
+
+.btn-share {
+  background: #f0f0f5;
+  color: #1a1a2e;
+}

@@ -1,0 +1,43 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/plan/plan",
+    "pages/now/now",
+    "pages/map/map"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#1a1a2e",
+    "navigationBarTitleText": "特种兵旅游助手",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f5f7fa"
+  },
+  "tabBar": {
+    "color": "#888",
+    "selectedColor": "#e94560",
+    "backgroundColor": "#fff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/plan/plan",
+        "text": "行程"
+      },
+      {
+        "pagePath": "pages/now/now",
+        "text": "当前"
+      }
+    ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "获取您的位置以提供导航和天气服务"
+    }
+  },
+  "requiredBackgroundModes": ["location"],
+  "requestDomain": [
+    "https://geoapi.qweather.com",
+    "https://devapi.qweather.com",
+    "https://apis.map.qq.com"
+  ],
+  "sitemapLocation": "sitemap.json"
+}

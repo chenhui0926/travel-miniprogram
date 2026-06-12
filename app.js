@@ -1,0 +1,53 @@
+App({
+  globalData: {
+    /* ==========================================================
+       ⚠️  重要：请先申请以下两个 API Key，然后替换下方值！
+       ========================================================== */
+
+    // 1️⃣ 腾讯位置服务 Key（用于地图、路线规划、导航）
+    //    申请教程见 /setup-guide.html 或 README.md
+    //    申请地址：https://lbs.qq.com/dev/console/application/mine
+    TENCENT_MAP_KEY: 'PONBZ-2MM6U-RK2V4-GBKNF-KFALT-O4FTN', // ✅ 已配置
+
+    // 2️⃣ 和风天气 Key（用于实时天气 + 3天预报）
+    //    申请教程见 /setup-guide.html 或 README.md
+    //    申请地址：https://dev.qweather.com/
+    QWEATHER_KEY: '5ec7d112ffb849d7bacff9f04820a64f', // ✅ 已配置
+
+    /* ==========================================================
+       上方两个 Key 配置完成后，即可编译运行！
+       ========================================================== */
+
+    // 当前行程状态
+    city: null,
+    days: 2,
+    styles: ['美食', '景点'],
+    pace: 'normal',
+    itinerary: [],
+    done: [],
+    isCustomCity: false,
+    customCityName: '',
+    weather: null,
+    location: null
+  },
+
+  onLaunch() {
+    // 检查位置权限
+    wx.getSetting({
+      success: (res) => {
+        if (!res.authSetting['scope.userLocation']) {
+          wx.authorize({
+            scope: 'scope.userLocation',
+            fail: () => {
+              wx.showModal({
+                title: '需要位置权限',
+                content: '获取天气和导航需要您的位置信息',
+                showCancel: false
+              });
+            }
+          });
+        }
+      }
+    });
+  }
+});
