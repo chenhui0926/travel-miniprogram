@@ -1,6 +1,9 @@
 # 微信开发者工具配置（含本地路径，不应提交）
 project.private.config.json
 
+# API 配置文件（含真实 Key，不应提交）
+config.js
+
 # macOS
 .DS_Store
 
